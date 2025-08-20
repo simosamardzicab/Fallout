@@ -19,7 +19,7 @@ endif()
 project(F12se LANGUAGES C CXX)
 
 # WIN32 for WinMain entry
-add_executable(${PROJECT_NAME} WIN32
+add_executable(${PROJECT_NAME}
     F2seMyLibs/CityTxt.cpp
     F2seMyLibs/CityTxt.h
     F2seMyLibs/DataModel.cpp
@@ -135,6 +135,9 @@ add_executable(${PROJECT_NAME} WIN32
     F2se/wxWidgetsUserData.h
     F2se/MyListBox.h
 )
+if(WIN32)
+    set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE ON)
+endif()
 target_include_directories(${PROJECT_NAME} PRIVATE
     "${PROJECT_SOURCE_DIR}/F2seMyLibs"
     "${PROJECT_SOURCE_DIR}/F2seMyLibs/SimpleHexEdit"
@@ -164,11 +167,12 @@ if(MSVC)
 endif()
 
 if(NOT F12SE_PUBLIC_BUILD)
-    find_package(wxWidgets CONFIG COMPONENTS core base)
+    find_package(wxWidgets COMPONENTS core base)
 endif()
 
 if(NOT F12SE_PUBLIC_BUILD AND wxWidgets_FOUND)
     message(STATUS "wxWidgets found: ${wxWidgets_LIBRARIES}")
+    include(${wxWidgets_USE_FILE})
     target_link_libraries(${PROJECT_NAME} ${wxWidgets_LIBRARIES})
 else()
     set(wxBUILD_SHARED OFF)

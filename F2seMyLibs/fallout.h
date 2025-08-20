@@ -10,8 +10,8 @@
 #include <vector>
 #include <algorithm>
 #include "FileFinder.h"
-#include "msg.h"
-#include "gam.h"
+#include "MSG.h"
+#include "GAM.h"
 #include "commontypes.h"
 #include "VecOfStr.h"
 #include "ntst_loggingpp.hpp"

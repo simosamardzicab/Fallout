@@ -14,6 +14,7 @@
 #include "Common.h"
 #include "Defines.h"
 #include "wxWidgetsUserData.h"
+#include <cstdint>
 
 //(*InternalHeaders(CrittersEdit)
 #include <wx/intl.h>
@@ -248,7 +249,7 @@ void CrittersEdit::OnbtnSaveClick(wxCommandEvent&)
 
 void UpdateCheckBoxState(wxCheckBox* cb, const MemBuffer& buf)
     {
-    cb->SetValue(buf.GetInv32(PRO_CRITTER_FLAGS_OFFSET) & (uint32)cb->GetClientData());
+    cb->SetValue(buf.GetInv32(PRO_CRITTER_FLAGS_OFFSET) & reinterpret_cast<uintptr_t>(cb->GetClientData()));
     }
 
 void CrittersEdit::OnlbFilesSelect(wxCommandEvent&)
@@ -281,7 +282,7 @@ void CrittersEdit::OncboxClick(wxCommandEvent& event)
     if (index == wxNOT_FOUND)
         return;
     MemBuffer& buf = buffers[index];
-    uint32 mask = (uint32)cb->GetClientData();
+    uintptr_t mask = reinterpret_cast<uintptr_t>(cb->GetClientData());
     uint32 val = buf.GetInv32(PRO_CRITTER_FLAGS_OFFSET);
     if (cb->IsChecked())
         val = val | mask;

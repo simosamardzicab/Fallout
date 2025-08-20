@@ -23,7 +23,7 @@
 #include "SettingsEdit.h"
 #include "ItemEdit.h"
 #include "CrittersEdit.h"
-#include "gam.h"
+#include "GAM.h"
 #include "WinFunc.h"
 #include "Common.h"
 
@@ -1992,7 +1992,7 @@ void F12seFrame::OnbtnDelSavClick(wxCommandEvent&)
     const int selected = lbSavFiles->GetSelection();
     if (selected == wxNOT_FOUND)
         return;
-    size_t offset = (size_t)lbSavFiles->GetClientData(selected);
+    size_t offset = reinterpret_cast<size_t>(lbSavFiles->GetClientData(selected));
     if (offset == 0)
         {
         ntst_log_error("Strange logical error while map deletion(selected map offset equal 0).");

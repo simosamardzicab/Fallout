@@ -500,6 +500,7 @@ bool StringIsValidUtf8(const std::string& str)
 
 GetFileVersionResult GetFileVersion(const std::string& filename, unsigned& a, unsigned& b, unsigned& c, unsigned& d)
     {
+#ifdef _WIN32
     DWORD dwHandle, size = GetFileVersionInfoSizeA(filename.c_str(), &dwHandle);
     if (size == 0)
         {
@@ -529,6 +530,10 @@ GetFileVersionResult GetFileVersion(const std::string& filename, unsigned& a, un
     c = pvi->dwFileVersionLS >> 16;
     d = pvi->dwFileVersionLS & 0xFFFF;
     return GFVR_OK;
+#else
+    (void)filename; (void)a; (void)b; (void)c; (void)d;
+    return GFVR_ERROR;
+#endif
     }
 
 #ifndef NDEBUG

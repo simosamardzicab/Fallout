@@ -7,16 +7,18 @@
 #ifndef WINFUNC_H
 #define WINFUNC_H
 
-#ifdef _WIN32
-
 #include <string>
 #include <vector>
+
+#ifdef _WIN32
 #include <windows.h>
+#else
+using HWND = void*;
+using BOOL = int;
+#endif
 
 bool BrowseDialog(const std::string &Title, HWND owner, std::string &path);
 BOOL OpenFileDialog(HWND owner, const std::string &initialDir, const char* ibitialFilename, std::string &path);
 BOOL SaveFileDialog(HWND owner, const std::string &initialDir, const char* ibitialFilename, std::string &path);
-
-#endif // _WIN32
 
 #endif // WINFUNC_H

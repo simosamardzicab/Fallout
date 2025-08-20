@@ -292,19 +292,19 @@ std::wstring DataModel::GetItemNameInCurSave(int offset) const
     if (!buf.GetInv32(offset + INVEN_ITEM_PID, &itemPID))
         {
         std::wstring error = L"Can't read pid for item at offset " + ntst::to_wstring_hex_pref(offset);
-        ntst_log_error_w(error);
+        ntst_log_error(WideStringToLocal(error.c_str(), error.size()));
         return error;
         }
     if (!itemsPro.Get4b(itemPID, 0x20, &itemType))
         {
         std::wstring error = L"Can't get type for item with pid " + ntst::to_wstring_hex_pref(itemPID);
-        ntst_log_error_w(error);
+        ntst_log_error(WideStringToLocal(error.c_str(), error.size()));
         return error;
         }
     if (!itemsPro.Get4b(itemPID, PRO_DID, &msgLine))
         {
         std::wstring error = L"Can't get did for item with pid " + ntst::to_wstring_hex_pref(itemPID);
-        ntst_log_error_w(error);
+        ntst_log_error(WideStringToLocal(error.c_str(), error.size()));
         return error;
         }
     return proItemMSG.GetText(msgLine) + L'(' + itemsTypes[itemType] + L") x " + ntst::to_wstring(buf.GetInv32(offset));
@@ -914,7 +914,10 @@ void DataModel::ModPerkAndApplyCorrectionIfNeed(unsigned perkNum, int32 newval)
     int statoffset = BONUS_STAT_OFFSET + statNum * sizeof(int32);
     int32 oldStatVal = curSave.fileSections[7].GetInv32(statoffset);
     int32 newStatVal = oldStatVal + statMod * (newval - oldval);
-    ntst_log_info_w(L"Perk \"" + perks[perkNum] + L"\" changes \"" + stats[statNum] + L"\" by " + ntst::to_wstring(statMod) +
-    L" per perk level. Changing stat from " + ntst::to_wstring(oldStatVal) + L" to " + ntst::to_wstring(newStatVal));
+    {
+    std::wstring msg = L"Perk \"" + perks[perkNum] + L"\" changes \"" + stats[statNum] + L"\" by " + ntst::to_wstring(statMod) +
+        L" per perk level. Changing stat from " + ntst::to_wstring(oldStatVal) + L" to " + ntst::to_wstring(newStatVal);
+    ntst_log_info(WideStringToLocal(msg.c_str(), msg.size()));
+    }
     curSave.fileSections[7].SetInv32(statoffset, newStatVal);
     }

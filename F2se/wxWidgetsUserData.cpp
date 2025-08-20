@@ -1,6 +1,7 @@
 #include "wxWidgetsUserData.h"
 #include "ntst_loggingpp.hpp"
 #include "Common.h"
+#include <cstdint>
 
 void SetWidgetLbTxtPairData(wxListBox *lb, wxTextCtrl *txt, PairTxtLb *p)
     {
@@ -10,22 +11,22 @@ void SetWidgetLbTxtPairData(wxListBox *lb, wxTextCtrl *txt, PairTxtLb *p)
 
 void SetWidgetData(wxWindow *widget, size_t offset)
     {
-    widget->SetClientData((void*)offset);
+    widget->SetClientData(reinterpret_cast<void*>(offset));
     }
 
 size_t GetWidgetData(wxWindow *widget)
     {
-    return (size_t)widget->GetClientData();
+    return reinterpret_cast<size_t>(widget->GetClientData());
     }
 
 void SetWidgetData(wxWindow *widget, unsigned function, size_t offset)
     {
-    widget->SetClientData((void*)(function + offset * 32));
+    widget->SetClientData(reinterpret_cast<void*>(function + offset * 32));
     }
 
 void GetWidgetData(wxWindow *widget, unsigned *function, size_t *offset)
     {
-    unsigned data = (unsigned)widget->GetClientData();
+    uintptr_t data = reinterpret_cast<uintptr_t>(widget->GetClientData());
     *function = data % 32;
     *offset = data / 32;
     if (*function == 0 && *offset == 0)

@@ -37,6 +37,7 @@
 #include "Localization.h"
 #include "wxWidgetsUserData.h"
 #include "MyListBox.h"
+#include <cstdint>
 
 class F12seFrame: public wxFrame, public DataModelViewer
 {
@@ -87,7 +88,7 @@ class F12seFrame: public wxFrame, public DataModelViewer
         wxString fileCrcChanged;
         wxString SFallNewGvarMessage;
         void RefreshSelectedCity();
-        int GetCityOffset(int cityNum) const {return (int)lbCities->GetClientData(cityNum);}
+        int GetCityOffset(int cityNum) const {return static_cast<int>(reinterpret_cast<intptr_t>(lbCities->GetClientData(cityNum)));}
         SFallGV sfallgv;
         size_t numberOfTilesOffset;
 

@@ -12,7 +12,9 @@
 #include "ntst_loggingpp.hpp"
 #include "misc.h"
 
+#ifdef _WIN32
 #include <windows.h>
+#endif
 
 StringConvFunc GetToWideConvFunc(GameCodePage gcp)
     {
@@ -91,7 +93,8 @@ void MsgFile::Load(const MemBuffer& buf, StringConvFunc convFunc)
         int key;
         if(swscanf(startText, L"%d", &key) != 1)
             {
-            ntst_log_error_w(L"Invalid integer key: " + std::wstring(startText, endText) + L" in file: " + LocalStringToWide(name));
+            std::wstring werr = L"Invalid integer key: " + std::wstring(startText, endText) + L" in file: " + LocalStringToWide(name);
+            ntst_log_error(WideStringToLocal(werr.c_str(), werr.size()));
             continue;
             }
         if (!FindTextInBrackets(&curChar, endChar, &startText, &endText))
@@ -110,7 +113,8 @@ void MsgFile::Load(const MemBuffer& buf, StringConvFunc convFunc)
         if (!ret.second)
             {
             const std::wstring& oldtext = ret.first->second.text;
-            ntst_log_warning_w(L"The key(" + ntst::to_wstring(key) + L") with the text(" + text + L") already exists(" + oldtext + L") in file: " + LocalStringToWide(name) + L" new value is ignored.");
+            std::wstring warn = L"The key(" + ntst::to_wstring(key) + L") with the text(" + text + L") already exists(" + oldtext + L") in file: " + LocalStringToWide(name) + L" new value is ignored.";
+            ntst_log_warning(WideStringToLocal(warn.c_str(), warn.size()));
             }
         }
     }
@@ -121,6 +125,6 @@ std::wstring MsgFile::GetText(int key) const
     if (it != keyToRec.end())
         return it->second.text;
     const std::wstring msg = L"Can't find " + ntst::to_wstring(key) + L" in " + LocalStringToWide(name);
-    ntst_log_warning_w(msg);
+    ntst_log_warning(WideStringToLocal(msg.c_str(), msg.size()));
     return L"*ERROR* " + msg;
     }

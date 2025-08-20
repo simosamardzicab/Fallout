@@ -232,4 +232,89 @@ BOOL SaveFileDialog(HWND owner, const std::string &initialDir, const char* ibiti
     return result;
     }
 
+#else
+
+#include "WinFunc.h"
+#include <cstdlib>
+#include <string>
+
+std::string WideStringToLocal(const wchar_t* str, size_t str_len)
+    {
+    if (str_len == 0)
+        return std::string();
+    size_t size_need = wcstombs(nullptr, str, 0);
+    if (size_need == static_cast<size_t>(-1))
+        return std::string();
+    std::string ret(size_need, '\0');
+    wcstombs(&ret[0], str, size_need);
+    return ret;
+    }
+
+std::string WideStringToRussianDos(const wchar_t* str, size_t str_len)
+    {
+    return WideStringToLocal(str, str_len);
+    }
+
+std::string WideStringToRussianLevCorp(const wchar_t* str, size_t str_len)
+    {
+    return WideStringToLocal(str, str_len);
+    }
+
+std::string WideStringToChineseTraditional(const wchar_t* str, size_t str_len)
+    {
+    return WideStringToLocal(str, str_len);
+    }
+
+std::string WideStringToChineseSimplified(const wchar_t* str, size_t str_len)
+    {
+    return WideStringToLocal(str, str_len);
+    }
+
+std::wstring LocalStringToWide(const char* str, size_t str_len)
+    {
+    if (str_len == 0)
+        return std::wstring();
+    size_t size_need = mbstowcs(nullptr, str, 0);
+    if (size_need == static_cast<size_t>(-1))
+        return std::wstring();
+    std::wstring ret(size_need, L'\0');
+    mbstowcs(&ret[0], str, size_need);
+    return ret;
+    }
+
+std::wstring LocalStringToWide(const std::string& str)
+    {
+    return LocalStringToWide(str.c_str(), str.size());
+    }
+
+std::wstring RussianDosStringToWide(const char* str, size_t str_len)
+    {
+    return LocalStringToWide(str, str_len);
+    }
+
+std::wstring ChineseTraditionalStringToWide(const char* str, size_t str_len)
+    {
+    return LocalStringToWide(str, str_len);
+    }
+
+std::wstring ChineseSimplifiedStringToWide(const char* str, size_t str_len)
+    {
+    return LocalStringToWide(str, str_len);
+    }
+
+bool BrowseDialog(const std::string&, HWND, std::string&)
+    {
+    return false;
+    }
+
+BOOL OpenFileDialog(HWND, const std::string&, const char*, std::string&)
+    {
+    return 0;
+    }
+
+BOOL SaveFileDialog(HWND, const std::string&, const char*, std::string&)
+    {
+    return 0;
+    }
+
 #endif // _WIN32

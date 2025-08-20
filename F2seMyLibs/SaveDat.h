@@ -29,7 +29,10 @@ public:
     const std::string& GetPath() const {return path;}
     std::string GetDir() const;
     std::string GetCrittersDir() const {return GetDir() + "\\proto\\critters";}
-    std::string ReadStr (int sectionNum, uint offset){return (char*)((uint)fileSections[sectionNum].GetAddress() + offset);}
+    std::string ReadStr (int sectionNum, uint offset)
+        {
+        return static_cast<const char*>(fileSections[sectionNum].GetAddress()) + offset;
+        }
     /*void SetGam(GamFile *gam){gvars = gam;};
     void SetItems(ProWorker *items){itemsPro = items;};
     void SetAiTxt(IniFile *ai){aiTxt = ai;};*/
