@@ -32,7 +32,9 @@ public:
 protected:
     void AdjustScrollbars();
     void OnScroll(wxScrollWinEvent& event);
+#ifdef _WIN32
     bool MSWProcessMessage(WXMSG* pMsg);
+#endif
 
     void ClearBackground()
     {

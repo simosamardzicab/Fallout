@@ -113,6 +113,7 @@ void SimpleHexEditCtrlWX::OnChar(wxKeyEvent &event)
     SimpleHexEditCtrlBase<SimpleHexEditCtrlWX>::OnKeyDown(event.GetKeyCode(), event.GetUnicodeKey(), event.ShiftDown(), event.ControlDown());
     }
 
+#ifdef _WIN32
 #include <windows.h>
 
 bool SimpleHexEditCtrlWX::MSWProcessMessage(WXMSG* pMsg)
@@ -148,6 +149,7 @@ bool SimpleHexEditCtrlWX::MSWProcessMessage(WXMSG* pMsg)
         }
     return wxWindow::MSWProcessMessage(pMsg);
     }
+#endif
 
 const int SimpleHexEditCtrlWX::GetKeyUp = WXK_UP;
 const int SimpleHexEditCtrlWX::GetKeyDown = WXK_DOWN;
